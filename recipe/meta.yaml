@@ -10,7 +10,7 @@ source:
     folder: armpl
 
 build:
-  number: 0
+  number: 1
   skip: True                                   # [not unix]
   missing_dso_whitelist:
     - /lib64/libc.so.6
@@ -20,11 +20,23 @@ build:
     - $RPATH/libgfortran.so.5
     - /lib64/librt.so.1
     - $RPATH/libgomp.so.1
-  test:
-    commands:
-      - ls -A $PREFIX/include/*              # [unix]
-      - ls -A $PREFIX/lib/*                  # [unix]
-      - test -f $PREFIX/include/armpl.h      # [unix]
-  about:
-    home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
+test:
+  commands:
+    - test -f $PREFIX/include/armpl.h           # [unix]
+    - test -f $PREFIX/include/blas.h            # [unix]
+    - test -f $PREFIX/include/cblas.h           # [unix]
+    - test -f $PREFIX/include/lapack.h          # [unix]
+    - test -f $PREFIX/include/lapacke.h         # [unix]
+    - test -f $PREFIX/lib/libarmpl.so*          # [unix]
+    - test -f $PREFIX/lib/libamath.so           # [unix]
+about:
+  home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
+
+
+about:
+  home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
+  license: Arm Performance Libraries (free version) EULA
+  license_family: OTHER
+  summary: Free Arm Performance Libraries
+  doc_url: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
 

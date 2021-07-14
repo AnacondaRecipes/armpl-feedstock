@@ -20,6 +20,7 @@ build:
     - $RPATH/libgfortran.so.5
     - /lib64/librt.so.1
     - $RPATH/libgomp.so.1
+
 test:
   commands:
     - test -f $PREFIX/include/armpl.h           # [unix]
@@ -29,9 +30,6 @@ test:
     - test -f $PREFIX/include/lapacke.h         # [unix]
     - test -f $PREFIX/lib/libarmpl.so*          # [unix]
     - test -f $PREFIX/lib/libamath.so           # [unix]
-about:
-  home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
-
 
 about:
   home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries

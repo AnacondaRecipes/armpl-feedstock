@@ -1,3 +1,4 @@
+# Repack the armpl binaries.
 cd armpl
 tar -xvf arm-performance-libraries_21.0_RHEL-7_gcc-10.2.tar?revision=df0303bf-296f-4f67-a4bf-344a05563bf4
 cd arm-performance-libraries_21.0_RHEL-7_gcc-10.2

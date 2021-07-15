@@ -22,6 +22,8 @@ build:
     - $RPATH/libgomp.so.1
 
 test:
+  files:
+    - test/fftw_dft_r2c_1d_c_example.c
   commands:
     - test -f $PREFIX/include/armpl.h           # [unix]
     - test -f $PREFIX/include/blas.h            # [unix]
@@ -30,6 +32,9 @@ test:
     - test -f $PREFIX/include/lapacke.h         # [unix]
     - test -f $PREFIX/lib/libarmpl.so*          # [unix]
     - test -f $PREFIX/lib/libamath.so           # [unix]
+    - gcc -c -I$PREFIX/include fftw_dft_r2c_1d_c_example.c -o fftw_dft_r2c_1d_c_example.o # [unix]
+    - gcc fftw_dft_r2c_1d_c_example.o -L$PREFIX/lib -o fftw_dft_r2c_1d_c_example -larmpl_lp64 -lgfortran -lm # [unix]
+    - ./fftw_dft_r2c_1d_c_example # [unix]
 
 about:
   home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries

@@ -2,6 +2,7 @@
  * fftw_dft_r2c_1d: FFT of a real sequence
  *
  * ARMPL version 21.0 Copyright Arm 2021
+ * From: https://developer.arm.com/tools-and-software/server-and-hpc/compile/arm-compiler-for-linux/resources/get-started/armpl-get-started/compile-an-example
  */
 
 #include <armpl.h>

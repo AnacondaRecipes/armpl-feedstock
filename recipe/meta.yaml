@@ -22,19 +22,14 @@ build:
     - $RPATH/libgomp.so.1
 
 test:
+  requires:
+    - {{ compiler('c') }}
+    - {{ compiler('fortran') }}
   files:
     - test/fftw_dft_r2c_1d_c_example.c
+    - test.sh
   commands:
-    - test -f $PREFIX/include/armpl.h           # [unix]
-    - test -f $PREFIX/include/blas.h            # [unix]
-    - test -f $PREFIX/include/cblas.h           # [unix]
-    - test -f $PREFIX/include/lapack.h          # [unix]
-    - test -f $PREFIX/include/lapacke.h         # [unix]
-    - test -f $PREFIX/lib/libarmpl.so*          # [unix]
-    - test -f $PREFIX/lib/libamath.so           # [unix]
-    - gcc -c -I$PREFIX/include fftw_dft_r2c_1d_c_example.c -o fftw_dft_r2c_1d_c_example.o # [unix]
-    - gcc fftw_dft_r2c_1d_c_example.o -L$PREFIX/lib -o fftw_dft_r2c_1d_c_example -larmpl_lp64 -lgfortran -lm # [unix]
-    - ./fftw_dft_r2c_1d_c_example # [unix]
+    - chmod u+x test.sh && ./test.sh #[unix]
 
 about:
   home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries

@@ -61,6 +61,10 @@ outputs:
       license_family: OTHER
       doc_url: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
 
+# 10/13/2021: Commenting out these outputs for now. Ideally we have separate packages for development
+# and runtime so that the massive 'armpl' package isn't required for each instllation, but we haven't
+# yet determined which components should go into which outputs to ensure proper functionality.
+#
 #   - name: armpl-devel
 #     script: repack_armpl-devel.sh
 #     files:

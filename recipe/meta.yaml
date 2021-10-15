@@ -23,7 +23,7 @@ source:
   - url: {{ source_url }}
 
 build:
-  number: 4
+  number: 5
   skip: True  # [not (linux and aarch64)]
   script_env:
     - SOURCE_FILENAME={{ source_filename }}
@@ -45,6 +45,9 @@ outputs:
     script: repack_armpl.sh
     run_exports:
       - blas * armpl
+    requirements:
+      run:
+        - blas * armpl
     test:
       requires:
         - {{ compiler('c') }}

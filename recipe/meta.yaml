@@ -1,17 +1,36 @@
-{% set name = "armpl" %}
+{% set source_url = "https://developer.arm.com/-/media/Files/downloads/hpc/arm-performance-libraries/21-0-0/RHEL7/arm-performance-libraries_21.0_RHEL-7_gcc-10.2.tar?revision=df0303bf-296f-4f67-a4bf-344a05563bf4" %}
+{% set name = "armpl_repack" %}
 {% set version = "21.0" %}
+
+# e.g. arm-performance-libraries_21.0_RHEL-7_gcc-10.2.tar?revision=df0303bf-296f-4f67-a4bf-344a05563bf4
+{% set source_filename = source_url.split('/')[-1] %}
+
+# e.g. arm-performance-libraries_21.0_RHEL-7_gcc-10.2
+{% set extracted_source_dir = source_filename.split('.tar')[0] %}
+
+# e.g. arm-performance-libraries_21.0_RHEL-7
+{% set source_binary = extracted_source_dir.split('_gcc')[0] %}
+
+# e.g. gcc-10.2
+{% set gcc_version_string = extracted_source_dir.split('_')[-1] %}
+
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  - url: https://developer.arm.com/-/media/Files/downloads/hpc/arm-performance-libraries/21-0-0/RHEL7/arm-performance-libraries_{{ version }}_RHEL-7_gcc-10.2.tar?revision=df0303bf-296f-4f67-a4bf-344a05563bf4
-    folder: armpl
+  - url: {{ source_url }}
 
 build:
-  number: 1
-  skip: True                                   # [not unix or not aarch64]
+  number: 5
+  skip: True  # [not (linux and aarch64)]
+  script_env:
+    - SOURCE_FILENAME={{ source_filename }}
+    - EXTRACTED_SOURCE_DIR={{ extracted_source_dir }}
+    - SOURCE_BINARY={{ source_binary }}
+    - ARMPL_VERSION={{ version }}
+    - GCC_VERSION_STRING={{ gcc_version_string }}
   missing_dso_whitelist:
     - /lib64/libc.so.6
     - /lib64/libpthread.so.0
@@ -21,15 +40,83 @@ build:
     - /lib64/librt.so.1
     - $RPATH/libgomp.so.1
 
-test:
-  requires:
-    - {{ compiler('c') }}
-    - {{ compiler('fortran') }}
-  files:
-    - test/fftw_dft_r2c_1d_c_example.c
-    - test.sh
-  commands:
-    - chmod u+x test.sh && ./test.sh #[unix]
+outputs:
+  - name: armpl
+    script: repack_armpl.sh
+    run_exports:
+      - blas * armpl
+    requirements:
+      run:
+        - blas * armpl
+    test:
+      requires:
+        - {{ compiler('c') }}
+        - {{ compiler('fortran') }}
+      files:
+        - test/fftw_dft_r2c_1d_c_example.c
+        - test_armpl.sh
+      commands:
+        - chmod u+x test_armpl.sh && ./test_armpl.sh
+    about:
+      summary: Free ArmPL binary repack
+      home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
+      license: Arm Performance Libraries (free version) EULA
+      license_family: OTHER
+      doc_url: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
+
+# 10/13/2021: Commenting out these outputs for now. Ideally we have separate packages for development
+# and runtime so that the massive 'armpl' package isn't required for each instllation, but we haven't
+# yet determined which components should go into which outputs to ensure proper functionality.
+#
+#   - name: armpl-devel
+#     script: repack_armpl-devel.sh
+#     files:
+#       - site.cfg
+#     run_exports:
+#       - {{ pin_subpackage("libarmpl") }}
+#       - blas * armpl
+#     requirements:
+#       build:
+#         - {{ compiler("c") }}
+#         - {{ compiler("fortran") }}
+#       host:
+#         - _openmp_mutex
+#     about:
+#       summary: Free ArmPL development components - files for developing software that uses ArmPL
+#       home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
+#       license: Arm Performance Libraries (free version) EULA
+#       license_family: OTHER
+#       doc_url: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
+# 
+#   - name: libarmpl
+#     script: repack_libarmpl.sh
+#     requirements:
+#       build:
+#         - {{ compiler("c") }}
+#         - {{ compiler("fortran") }}
+#       host:
+#         - _openmp_mutex
+#     test:
+#       script: test_libarmpl.sh
+#     about:
+#       summary: Free ArmPL shared object files
+#       home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
+#       license: Arm Performance Libraries (free version) EULA
+#       license_family: OTHER
+#       doc_url: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
+
+  # mutex package to keep only one blas implementation in a given env
+  - name: blas
+    version: 1.0
+    build:
+      string: armpl
+    test:
+      commands:
+        - echo 'works!'
+      about:
+        summary: BLAS mutex for ArmPL
+        home: https://github.com/AnacondaRecipes/armpl-feedstock
+        license: BSD-3-Clause
 
 about:
   home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries

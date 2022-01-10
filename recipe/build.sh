@@ -4,7 +4,8 @@ set -o pipefail,xtrace,nounset
 
 # Untar and delete the version number found between _ and _
 # This is intened to make it simpler to maintain between versions
-tar -xv --transform='s,_.+_,,' -f arm-performance-libraries.tar
+# Requires gnutar, so will not work on BSD or mac versions of tar
+tar -xv --transform 's,_[^/]*_manylinux,,g' --show-transformed-names -f arm-performance-libraries.tar
 cd arm-performance-libraries || exit 1
 
 # Run installer script

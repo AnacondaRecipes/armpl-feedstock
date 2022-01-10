@@ -13,6 +13,7 @@ exists() {
 	fi
 }
 
+# Make sure all the expected files exist
 for i in include/{armpl,blas,cblas,lapack,lapacke}.h lib/{libarmpl{,_mp,_int64_mp,_int64},libamath,libastring}.so; do
 	exists $i
 done
@@ -20,4 +21,6 @@ done
 # Compile the example and run it
 $CC -c -I"${PREFIX}/include" test/fftw_dft_r2c_1d_c_example.c -o fftw_dft_r2c_1d_c_example.o
 $CC fftw_dft_r2c_1d_c_example.o -L"${PREFIX}/lib" -o fftw_dft_r2c_1d_c_example -larmpl_lp64 -lgfortran -lm
+
+# This should exit with success, assuming armpl was installed properly
 ./fftw_dft_r2c_1d_c_example

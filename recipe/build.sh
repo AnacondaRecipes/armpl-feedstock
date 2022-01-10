@@ -1,11 +1,22 @@
+#!/bin/bash
 # Repack the armpl binaries.
-cd armpl
-tar -xvf arm-performance-libraries_21.0_RHEL-7_gcc-10.2.tar?revision=df0303bf-296f-4f67-a4bf-344a05563bf4
-cd arm-performance-libraries_21.0_RHEL-7_gcc-10.2
-./arm-performance-libraries_21.0_*.sh --accept --install-to $PREFIX --force
-mkdir $PREFIX/include
-mkdir $PREFIX/lib
-cp -rn $PREFIX/armpl_21.0_gcc-10.2/include*/* $PREFIX/include
-cp -rn $PREFIX/armpl_21.0_gcc-10.2/lib*/* $PREFIX/lib
-rm -rf $PREFIX/armpl_21.0_gcc-10.2
+set -o pipefail,xtrace,nounset
 
+# Untar and delete the version number found between _ and _
+# This is intened to make it simpler to maintain between versions
+tar -xv --transform='s,_.+_,,' -f arm-performance-libraries.tar
+cd arm-performance-libraries || exit 1
+
+# Run installer script
+./arm-performance-libraries.sh --accept --install-to "${PREFIX}" --force
+
+# Create the standard installation locations
+mkdir "${PREFIX}/include"
+mkdir "${PREFIX}/lib"
+
+# Move everything into the standard locations
+cp -rn "${PREFIX}"/armpl_*_gcc-*/include*/* "${PREFIX}"/include
+cp -rn "${PREFIX}"/armpl_*_gcc-*/lib*/* "${PREFIX}"/lib
+
+# Remove arm specific directories
+rm -rf "${PREFIX}"/armpl_*

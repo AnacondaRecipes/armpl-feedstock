@@ -7,7 +7,8 @@ package:
 
 source:
   - url: 'https://developer.arm.com/-/media/Files/downloads/hpc/arm-performance-libraries/{{ version | replace(".", "-") }}/arm-performance-libraries_{{ version }}_manylinux.tar'
-    folder: armpl
+    fn: arm-performance-libraries.tar
+    sha256: 262a3c675726bf1886a41eba108fe5549e0857af8c8d6a0b1b19d94c35ce2806
 
 build:
   number: 1
@@ -27,9 +28,6 @@ test:
     - {{ compiler('fortran') }}
   files:
     - test/fftw_dft_r2c_1d_c_example.c
-    - test.sh
-  commands:
-    - chmod u+x test.sh && ./test.sh #[unix]
 
 about:
   home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries

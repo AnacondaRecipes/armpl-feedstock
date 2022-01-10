@@ -1,12 +1,12 @@
 {% set name = "armpl" %}
-{% set version = "21.0" %}
+{% set version = "21.1.1" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  - url: https://developer.arm.com/-/media/Files/downloads/hpc/arm-performance-libraries/21-0-0/RHEL7/arm-performance-libraries_{{ version }}_RHEL-7_gcc-10.2.tar?revision=df0303bf-296f-4f67-a4bf-344a05563bf4
+  - url: 'https://developer.arm.com/-/media/Files/downloads/hpc/arm-performance-libraries/{{ version | replace(".", "-") }}/arm-performance-libraries_{{ version }}_manylinux.tar'
     folder: armpl
 
 build:

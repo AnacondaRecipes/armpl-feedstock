@@ -1,6 +1,8 @@
 #!/bin/bash
 # Repack the armpl binaries.
-set -o pipefail,xtrace,nounset
+set -o pipefail
+set -o xtrace
+set -o nounset
 
 # Untar and delete the version number found between _ and _
 # This is intened to make it simpler to maintain between versions

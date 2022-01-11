@@ -11,7 +11,7 @@ source:
     sha256: 262a3c675726bf1886a41eba108fe5549e0857af8c8d6a0b1b19d94c35ce2806
 
 build:
-  number: 1
+  number: 0
   skip: True                                   # [not unix or not aarch64]
   missing_dso_whitelist:
     - /lib64/libc.so.6
@@ -31,7 +31,7 @@ test:
 
 about:
   home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
-  license: Arm Performance Libraries (free version) EULA
+  license: Arm Performance Libraries (free version) EULA AND BSL-1.0 AND BSD-2-Clause AND BSD-3-Clause AND MIT AND Apache-2.0 AND GPL-3.0-with-GCC-exception
   license_family: OTHER
   summary: Free Arm Performance Libraries
   doc_url: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries

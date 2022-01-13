@@ -1,13 +1,11 @@
-{% set name = "armpl" %}
 {% set version = "21.1.1" %}
 
 package:
-  name: {{ name }}
+  name: armpl
   version: {{ version }}
 
 source:
   url: 'https://developer.arm.com/-/media/Files/downloads/hpc/arm-performance-libraries/{{ version | replace(".", "-") }}/arm-performance-libraries_{{ version }}_manylinux.tar'
-  fn: arm-performance-libraries.tar
   sha256: 262a3c675726bf1886a41eba108fe5549e0857af8c8d6a0b1b19d94c35ce2806
 
 build:

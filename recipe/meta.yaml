@@ -1,16 +1,15 @@
-{% set name = "armpl" %}
-{% set version = "21.0" %}
+{% set version = "21.1.1" %}
 
 package:
-  name: {{ name }}
+  name: armpl
   version: {{ version }}
 
 source:
-  - url: https://developer.arm.com/-/media/Files/downloads/hpc/arm-performance-libraries/21-0-0/RHEL7/arm-performance-libraries_{{ version }}_RHEL-7_gcc-10.2.tar?revision=df0303bf-296f-4f67-a4bf-344a05563bf4
-    folder: armpl
+  url: 'https://developer.arm.com/-/media/Files/downloads/hpc/arm-performance-libraries/{{ version | replace(".", "-") }}/arm-performance-libraries_{{ version }}_manylinux.tar'
+  sha256: 262a3c675726bf1886a41eba108fe5549e0857af8c8d6a0b1b19d94c35ce2806
 
 build:
-  number: 1
+  number: 0
   skip: True                                   # [not unix or not aarch64]
   missing_dso_whitelist:
     - /lib64/libc.so.6
@@ -27,13 +26,10 @@ test:
     - {{ compiler('fortran') }}
   files:
     - test/fftw_dft_r2c_1d_c_example.c
-    - test.sh
-  commands:
-    - chmod u+x test.sh && ./test.sh #[unix]
 
 about:
   home: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
-  license: Arm Performance Libraries (free version) EULA
+  license: Arm Performance Libraries (free version) EULA AND BSL-1.0 AND BSD-2-Clause AND BSD-3-Clause AND MIT AND Apache-2.0 AND GPL-3.0-with-GCC-exception
   license_family: OTHER
   summary: Free Arm Performance Libraries
   doc_url: https://developer.arm.com/tools-and-software/server-and-hpc/downloads/arm-performance-libraries
